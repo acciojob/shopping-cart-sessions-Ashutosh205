@@ -1,101 +1,47 @@
-/*  your css code here. If applicable */
-/* General Styles */
 body {
   font-family: Arial, sans-serif;
-  margin: 20px;
-  padding: 0;
+  padding: 20px;
   background-color: #f4f4f4;
-  color: #333;
 }
 
 h1, h2 {
-  color: #444;
-  text-align: center;
+  color: #333;
 }
 
-/* Product List Styles */
-#product-list {
-  list-style: none;
-  padding: 0;
-  margin: 20px auto;
-  max-width: 600px;
+ul {
+  list-style-type: none;
 }
 
-#product-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+li {
   padding: 10px;
+  margin: 5px;
   background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
-#product-list button {
+button {
+  padding: 5px 10px;
   background-color: #28a745;
   color: white;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
 }
 
-#product-list button:hover {
+button:hover {
   background-color: #218838;
 }
 
-/* Cart List Styles */
-#cart-list {
-  list-style: none;
-  padding: 0;
-  margin: 20px auto;
-  max-width: 600px;
-}
-
-#cart-list li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+#clear-cart-btn {
+  margin-top: 20px;
   padding: 10px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 10px;
-}
-
-#cart-list button {
   background-color: #dc3545;
   color: white;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s ease;
-}
-
-#cart-list button:hover {
-  background-color: #c82333;
-}
-
-/* Clear Cart Button Styles */
-#clear-cart-btn {
-  display: block;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  text-align: center;
-  margin: 20px auto;
-  transition: background-color 0.3s ease;
 }
 
 #clear-cart-btn:hover {
-  background-color: #0056b3;
+  background-color: #c82333;
 }

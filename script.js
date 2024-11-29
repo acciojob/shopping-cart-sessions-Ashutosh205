@@ -1,74 +1,44 @@
-// Product data
-const products = [
-  { id: 1, name: "Product 1", price: 10 },
-  { id: 2, name: "Product 2", price: 20 },
-  { id: 3, name: "Product 3", price: 30 },
-  { id: 4, name: "Product 4", price: 40 },
-  { id: 5, name: "Product 5", price: 50 },
-];
+// Function to add product to cart and store in session storage
+function addToCart(id, name, price) {
+  let cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+  const product = { id, name, price };
 
-// DOM elements
-const productList = document.getElementById("product-list");
-const cartList = document.getElementById("cart-list");
-const clearCartBtn = document.getElementById("clear-cart-btn");
-
-// Render Product List
-function renderProducts() {
-  productList.innerHTML = ""; // Clear previous content
-  products.forEach((product) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      ${product.name} - $${product.price} 
-      <button class="add-to-cart-btn" data-id="${product.id}">Add to Cart</button>
-    `;
-    productList.appendChild(li);
-  });
-
-  // Add event listeners for "Add to Cart" buttons
-  document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
-    button.addEventListener("click", () => addToCart(Number(button.dataset.id)));
-  });
-}
-
-// Render Cart List
-function renderCart() {
-  const cartData = JSON.parse(sessionStorage.getItem("cart")) || [];
-  cartList.innerHTML = ""; // Clear previous content
-  cartData.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = `${item.name} - $${item.price}`;
-    cartList.appendChild(li);
-  });
-}
-
-// Add Item to Cart
-function addToCart(productId) {
-  const cartData = JSON.parse(sessionStorage.getItem("cart")) || [];
-  const product = products.find((p) => p.id === productId);
-  if (product) {
-    cartData.push(product); // Add product to cart
-    sessionStorage.setItem("cart", JSON.stringify(cartData)); // Save to session storage
-    renderCart(); // Update cart UI
+  // Check if the product is already in the cart
+  const existingProductIndex = cart.findIndex(item => item.id === id);
+  if (existingProductIndex > -1) {
+    // If the product already exists in the cart, update the quantity
+    cart[existingProductIndex].quantity++;
+  } else {
+    // If it's a new product, add it to the cart
+    product.quantity = 1;
+    cart.push(product);
   }
+
+  // Store updated cart in session storage
+  sessionStorage.setItem('cart', JSON.stringify(cart));
+
+  // Update cart UI
+  updateCartUI();
 }
 
-// Clear Cart
+// Function to update the cart UI based on session storage
+function updateCartUI() {
+  const cart = JSON.parse(sessionStorage.getItem('cart')) || [];
+  const cartList = document.getElementById('cart-list');
+  cartList.innerHTML = '';
+
+  cart.forEach(product => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${product.name} - $${product.price} x ${product.quantity}`;
+    cartList.appendChild(listItem);
+  });
+}
+
+// Function to clear the cart
 function clearCart() {
-  sessionStorage.setItem("cart", JSON.stringify([])); // Reset cart in session storage
-  renderCart(); // Re-render the cart
+  sessionStorage.removeItem('cart');
+  updateCartUI();
 }
 
-// Initialize
-function initialize() {
-  // Reset sessionStorage for testing purposes
-  sessionStorage.setItem("cart", JSON.stringify([]));
-
-  renderProducts();
-  renderCart();
-}
-
-// Initial Render
-initialize();
-
-// Event Listeners
-clearCartBtn.addEventListener("click", clearCart);
+// Initial call to update cart UI when the page loads
+updateCartUI();
