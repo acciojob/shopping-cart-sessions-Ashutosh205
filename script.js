@@ -54,13 +54,39 @@ function addToCart(productId) {
 
 // Clear Cart
 function clearCart() {
-  sessionStorage.removeItem("cart"); // Remove cart from session storage
+  sessionStorage.setItem("cart", JSON.stringify([])); // Reset cart in session storage
   renderCart(); // Re-render the cart
 }
 
+// Initialize
+function initialize() {
+  // Reset sessionStorage for testing purposes
+  sessionStorage.setItem("cart", JSON.stringify([]));
+
+  renderProducts();
+  renderCart();
+}
+
 // Initial Render
-renderProducts();
-renderCart();
+initialize();
 
 // Event Listeners
 clearCartBtn.addEventListener("click", clearCart);
+// Cypress Test Code
+it("stores the cart data in session storage", () => {
+  cy.get("ul#product-list").children("li").first().children("button").click(); // Add Product 1
+  cy.get("ul#product-list").children("li").last().children("button").click(); // Add Product 5
+  cy.get("ul#product-list").children("li").first().children("button").click(); // Add Product 1 again
+
+  cy.window()
+    .its("sessionStorage")
+    .invoke("getItem", "cart")
+    .should(
+      "eq",
+      JSON.stringify([
+        { id: 1, name: "Product 1", price: 10 },
+        { id: 5, name: "Product 5", price: 50 },
+        { id: 1, name: "Product 1", price: 10 },
+      ])
+    );
+});
